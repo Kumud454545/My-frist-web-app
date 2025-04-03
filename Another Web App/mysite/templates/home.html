@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block Title %}Home{% endblock %}
+{% block content %}
+<div class="chatarea">
+	<ul>
+		{% for message in messages %}
+			{% if message.content != None %}
+				<div class="username">{{message.user.username}}</div>
+				<li>
+					{% autoescape false %}
+					{{message.content | e | replace('\n','<br/>') | safe}}
+					{% endautoescape %}
+				</li>
+				<br/>
+			{% elif not message %}
+				<div class="postmes">
+					<h1>No Messages.</h1>
+					<p>So empty...</p>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<div class="postmes">
+		<form method="POST">
+			<textarea name="message" placeholder="Enter Your Message" id="message"></textarea>
+			<button type="submit"><div class="magic"><i class='bx bx-send' ></i></div></button>
+		</form>
+	</div>
+</div>
+{% endblock %}

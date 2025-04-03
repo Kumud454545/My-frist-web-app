@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
+	<title>{% block Title %}Title{% endblock %}</title>
+</head>
+<nav class="navbar">
+	<ul>
+		{% if user.is_authenticated %}
+		<li class="home-li"><a href="/home">Home</a></li>
+		<li><a href="#">About</a></li>
+		<li><a href="/logout">LogOut</a></li>
+		{% else %}
+		<li><a href="/login">LogIn</a></li>
+		<li><a href="/sign_up">SignUp</a></li>
+		{% endif %}
+	</ul>
+</nav>
+<body>
+	{% with messages = get_flashed_messages(with_categories=True) %}
+		{% for cat,mes in messages %}
+			{% if cat == "error" %}
+				<div class="success" id="alert-message">{{ mes }}
+					<form method="POST" class="tfew">
+						<button type="button" class="close" id="exit-btn">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</form>
+				</div>
+			{% elif cat=="works" %}
+				<div class="alert" id="alert-message">{{ mes }}
+					<form method="POST" class="tfew">
+						<button type="button" class="close" id="exit-btn">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</form>
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endwith %}
+	{% block content %}
+	<h1>Testing</h1>
+	{% endblock %}
+</body>
+	<script type="text/javascript">
+		document.getElementById('exit-btn').addEventListener('click', function() {
+			thingy_toggle = false
+			try{
+				let thingy = document.getElementById('alert-message').remove();
+				document.getElementById('exit-btn').remove();
+				thingy_toggle = true
+			}
+			catch(err){
+				if (thingy_toggle === true){
+					console.log("test-error")
+					document.getElementById("demo").innerHTML = err.message;
+				}
+			}
+		});
+	</script>
+</html>
